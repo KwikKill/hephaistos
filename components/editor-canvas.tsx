@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { useWebsiteStore } from "@/lib/store"
 import { Button } from "@/components/ui/button"
 import { Eye, EyeOff } from "lucide-react"
@@ -8,13 +8,33 @@ import ElementTree from "@/components/element-tree"
 import ElementRenderer from "./element-renderer"
 
 export default function EditorCanvas() {
-  const { website, currentPageId, setSelectedElementId } = useWebsiteStore()
+  const { website, currentPageId, deleteSelectedElement, setSelectedElementId, deleteElement } = useWebsiteStore()
 
   const currentPage = website.pages.find((page) => page.id === currentPageId)
 
   const handleCanvasClick = () => {
     setSelectedElementId(null)
   }
+
+  // Add global keydown event listener
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        e.preventDefault()
+        setSelectedElementId(null)
+      }
+      // supr key to delete selected element
+      if (e.key === "Delete" || e.key === "Backspace") {
+        console.log("delete")
+        deleteSelectedElement()
+      }
+    }
+
+    window.addEventListener("keydown", handleKeyDown)
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown)
+    }
+  }, [setSelectedElementId])
 
   if (!currentPage) {
     return (

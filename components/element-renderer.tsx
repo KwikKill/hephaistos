@@ -151,6 +151,10 @@ export default function ElementRenderer({ elementId, isPreview }: ElementRendere
         content: editContent,
       })
     }
+    if (e.key === "Escape") {
+      setIsEditing(false)
+      setEditContent(element.content || "")
+    }
   }
 
   const handleDelete = (e: React.MouseEvent) => {

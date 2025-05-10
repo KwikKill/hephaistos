@@ -17,6 +17,8 @@ interface WebsiteState {
   setSelectedElementId: (elementId: string | null) => void
   setHoveredElementId: (elementId: string | null) => void
 
+  deleteSelectedElement: () => void
+
   CreateDefaultWebsite: (name?: string) => void
 
   addPage: (name: string) => void
@@ -112,6 +114,13 @@ export const useWebsiteStore = create<WebsiteState>((set, get) => ({
   setCurrentPageId: (pageId) => set({ currentPageId: pageId, selectedElementId: null }),
 
   setSelectedElementId: (elementId) => set({ selectedElementId: elementId }),
+
+  deleteSelectedElement: () => {
+    const { selectedElementId } = get()
+    if (selectedElementId) {
+      get().deleteElement(selectedElementId)
+    }
+  },
 
   setHoveredElementId: (elementId) => set({ hoveredElementId: elementId }),
 
