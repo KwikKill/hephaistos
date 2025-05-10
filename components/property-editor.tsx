@@ -457,41 +457,6 @@ export default function PropertyEditor() {
             </div>
           )}
 
-          {/* Link Properties */}
-          {selectedElement.type === ElementTypes.LINK && (
-            <div className="space-y-2">
-              <h3 className="text-sm font-medium">Link</h3>
-              <div className="space-y-1">
-                <Label htmlFor="href" className="text-xs">
-                  Href
-                </Label>
-                <Input
-                  id="href"
-                  value={selectedElement.href || ""}
-                  onChange={(e) => updateHref(e.target.value)}
-                  placeholder="https://example.com"
-                />
-              </div>
-            </div>
-          )}
-
-          {/* Button click Properties */}
-          {selectedElement.type === ElementTypes.BUTTON && (
-            <div className="space-y-2">
-              <h3 className="text-sm font-medium">Button</h3>
-              <div className="space-y-1">
-                <Label htmlFor="onClick" className="text-xs">
-                  On Click
-                </Label>
-                <Textarea
-                  id="onClick"
-                  value={selectedElement.onClick || ""}
-                  onChange={(e) => updateOnClick(e.target.value)}
-                  placeholder="console.log('Button clicked')"
-                />
-              </div>
-            </div>
-          )}
         </TabsContent>
       </Tabs>
 
@@ -533,6 +498,40 @@ export default function PropertyEditor() {
               />
             </div>
           )}
+        </div>
+      )}
+
+      {/* Link Properties */}
+      {selectedElement.type === ElementTypes.LINK && (
+        <div className="space-y-2">
+          <div className="space-y-1">
+            <Label htmlFor="href" className="text-xs">
+              Href
+            </Label>
+            <Input
+              id="href"
+              value={selectedElement.href || ""}
+              onChange={(e) => updateHref(e.target.value)}
+              placeholder="https://example.com"
+            />
+          </div>
+        </div>
+      )}
+
+      {/* Button click Properties */}
+      {selectedElement.type === ElementTypes.BUTTON && (
+        <div className="space-y-2">
+          <div className="space-y-1">
+            <Label htmlFor="onClick" className="text-xs">
+              On Click
+            </Label>
+            <Textarea
+              id="onClick"
+              value={selectedElement.onClick || ""}
+              onChange={(e) => updateOnClick(e.target.value)}
+              placeholder="console.log('Button clicked')"
+            />
+          </div>
         </div>
       )}
     </div>

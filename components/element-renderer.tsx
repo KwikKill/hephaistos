@@ -90,7 +90,7 @@ export default function ElementRenderer({ elementId, isPreview }: ElementRendere
             const parent = website.elements[parentId]
             if (parent && parent.children) {
               parent.children.forEach((child) => {
-                checkDescendant(child.id)
+                checkDescendant(child)
               })
             }
           }
@@ -231,7 +231,7 @@ export default function ElementRenderer({ elementId, isPreview }: ElementRendere
       return (
         <div style={combinedStyle} className="element">
           {element.children.map((childRef) => (
-            <ElementRenderer key={childRef.id} elementId={childRef.id} isPreview={isPreview} />
+            <ElementRenderer key={childRef} elementId={childRef} isPreview={isPreview} />
           ))}
         </div>
       )
@@ -290,7 +290,7 @@ export default function ElementRenderer({ elementId, isPreview }: ElementRendere
       {/* Render children directly inside the container */}
       {isContainer &&
         element.children.map((childRef) => (
-          <ElementRenderer key={childRef.id} elementId={childRef.id} isPreview={isPreview} />
+          <ElementRenderer key={childRef} elementId={childRef} isPreview={isPreview} />
         ))}
 
       {/* Empty state message */}

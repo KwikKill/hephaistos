@@ -82,7 +82,7 @@ function ElementNode({ elementId, level, isExpanded: defaultExpanded = false }: 
       {isExpanded && hasChildren && (
         <div>
           {element.children.map((child) => (
-            <ElementNode key={child.id} elementId={child.id} level={level + 1} />
+            <ElementNode key={child} elementId={child} level={level + 1} />
           ))}
         </div>
       )}

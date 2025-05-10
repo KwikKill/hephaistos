@@ -24,7 +24,7 @@ export default function WebsiteBuilder() {
   const [isMounted, setIsMounted] = useState(false)
   const [exportModalOpen, setExportModalOpen] = useState(false)
 
-  const { website, setWebsite, selectedElementId, saveToLocalStorage, loadFromLocalStorage, setSelectedElementId } = useWebsiteStore()
+  const { website, setWebsite, selectedElementId, saveToLocalStorage, loadFromLocalStorage, setSelectedElementId, setCurrentPageId } = useWebsiteStore()
 
   useEffect(() => {
     setIsMounted(true)
@@ -67,6 +67,9 @@ export default function WebsiteBuilder() {
           title: "Imported",
           description: "Your website configuration has been imported",
         })
+        // Load the first page
+        const firstPage = json.pages[0].id
+        setCurrentPageId(firstPage)
       } catch (error) {
         toast({
           title: "Error",

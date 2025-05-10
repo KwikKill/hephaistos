@@ -139,7 +139,7 @@ export const useWebsiteStore = create<WebsiteState>((set, get) => ({
       elementIdsToDelete.add(elementId)
       const element = website.elements[elementId]
       if (element && element.children) {
-        element.children.forEach((child) => collectElementIds(child.id))
+        element.children.forEach((child) => collectElementIds(child))
       }
     }
 
@@ -193,7 +193,7 @@ export const useWebsiteStore = create<WebsiteState>((set, get) => ({
     if (actualParentId && updatedElements[actualParentId]) {
       updatedElements[actualParentId] = {
         ...updatedElements[actualParentId],
-        children: [...updatedElements[actualParentId].children, updatedElements[newElement.id]],
+        children: [...updatedElements[actualParentId].children, newElement.id],
       }
     }
 
@@ -242,12 +242,15 @@ export const useWebsiteStore = create<WebsiteState>((set, get) => ({
     // Get all child element IDs to delete (recursive)
     const elementIdsToDelete = new Set<string>()
 
-    const collectElementIds = (element: WebsiteElement) => {
-      elementIdsToDelete.add(element.id)
-      element.children.forEach((child) => collectElementIds(child))
+    const collectElementIds = (elementId: string) => {
+      elementIdsToDelete.add(elementId)
+      const element = website.elements[elementId]
+      if (element && element.children) {
+        element.children.forEach((child) => collectElementIds(child))
+      }
     }
 
-    collectElementIds(elementToDelete)
+    collectElementIds(elementToDelete.id)
 
     // Create new elements object without the deleted elements
     const newElements = { ...website.elements }
@@ -259,7 +262,7 @@ export const useWebsiteStore = create<WebsiteState>((set, get) => ({
     if (elementToDelete.parentId && newElements[elementToDelete.parentId]) {
       newElements[elementToDelete.parentId] = {
         ...newElements[elementToDelete.parentId],
-        children: newElements[elementToDelete.parentId].children.filter((child) => child.id !== elementId),
+        children: newElements[elementToDelete.parentId].children.filter((child) => child !== elementId),
       }
     }
 
@@ -296,7 +299,7 @@ export const useWebsiteStore = create<WebsiteState>((set, get) => ({
       const parent = website.elements[parentId]
       if (parent && parent.children) {
         parent.children.forEach((child) => {
-          checkDescendant(child.id)
+          checkDescendant(child)
         })
       }
     }
@@ -314,7 +317,7 @@ export const useWebsiteStore = create<WebsiteState>((set, get) => ({
     if (oldParentId && updatedElements[oldParentId]) {
       updatedElements[oldParentId] = {
         ...updatedElements[oldParentId],
-        children: updatedElements[oldParentId].children.filter((child) => child.id !== elementId),
+        children: updatedElements[oldParentId].children.filter((child) => child !== elementId),
       }
     }
 
@@ -330,10 +333,10 @@ export const useWebsiteStore = create<WebsiteState>((set, get) => ({
 
       if (typeof index === "number" && index >= 0 && index <= newParentChildren.length) {
         // Insert at specific index
-        newParentChildren.splice(index, 0, updatedElements[elementId])
+        newParentChildren.splice(index, 0, updatedElements[elementId].id)
       } else {
         // Add to the end
-        newParentChildren.push(updatedElements[elementId])
+        newParentChildren.push(updatedElements[elementId].id)
       }
 
       updatedElements[newParentId] = {
@@ -364,7 +367,9 @@ export const useWebsiteStore = create<WebsiteState>((set, get) => ({
     const deepCopyElement = (element: WebsiteElement): WebsiteElement => {
       const newId = generateId()
 
-      const copiedChildren = element.children.map((child) => deepCopyElement(website.elements[child.id]))
+      const copiedChildren = element.children.map((childId) => {
+        return childId
+      })
 
       return {
         ...element,
@@ -380,24 +385,24 @@ export const useWebsiteStore = create<WebsiteState>((set, get) => ({
     // Add all new elements to the elements record
     const newElements = { ...website.elements }
 
-    const addElementsRecursively = (element: WebsiteElement) => {
-      newElements[element.id] = element
-      element.children.forEach((child) => {
+    const addElementsRecursively = (elementId: string) => {
+      newElements[elementId] = deepCopyElement(website.elements[elementId])
+      website.elements[elementId]?.children.forEach((child) => {
         addElementsRecursively(child)
       })
     }
 
-    addElementsRecursively(duplicatedElement)
+    addElementsRecursively(duplicatedElement.id)
 
     // Add the duplicated element to its parent
     if (duplicatedElement.parentId && newElements[duplicatedElement.parentId]) {
       const parentChildren = [...newElements[duplicatedElement.parentId].children]
-      const originalIndex = parentChildren.findIndex((child) => child.id === elementId)
+      const originalIndex = parentChildren.findIndex((child) => child === elementId)
 
       if (originalIndex !== -1) {
-        parentChildren.splice(originalIndex + 1, 0, duplicatedElement)
+        parentChildren.splice(originalIndex + 1, 0, duplicatedElement.id)
       } else {
-        parentChildren.push(duplicatedElement)
+        parentChildren.push(duplicatedElement.id)
       }
 
       newElements[duplicatedElement.parentId] = {
@@ -443,7 +448,10 @@ export const useWebsiteStore = create<WebsiteState>((set, get) => ({
     const deepCopyElement = (element: WebsiteElement): WebsiteElement => {
       const newId = generateId()
 
-      const copiedChildren = element.children.map((child) => deepCopyElement(child))
+      const copiedChildren = element.children.map((childId) => {
+        const childElement = website.elements[childId];
+        return childElement ? deepCopyElement(childElement).id : childId;
+      })
 
       return {
         ...element,
@@ -462,7 +470,8 @@ export const useWebsiteStore = create<WebsiteState>((set, get) => ({
     const addElementsRecursively = (element: WebsiteElement) => {
       newElements[element.id] = element
       element.children.forEach((child) => {
-        addElementsRecursively(child)
+        const childElement = website.elements[child]
+        addElementsRecursively(childElement ? deepCopyElement(childElement) : childElement)
       })
     }
 
@@ -472,7 +481,7 @@ export const useWebsiteStore = create<WebsiteState>((set, get) => ({
     if (actualParentId && newElements[actualParentId]) {
       newElements[actualParentId] = {
         ...newElements[actualParentId],
-        children: [...newElements[actualParentId].children, pastedElement],
+        children: [...newElements[actualParentId].children, pastedElement.id],
       }
     }
 

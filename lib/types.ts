@@ -27,7 +27,7 @@ export interface WebsiteElement {
   name?: string
   style: Record<string, any>
   content: string
-  children: WebsiteElement[]
+  children: string[]
   parentId: string | null
   // Layout specific properties
   layoutProps?: {

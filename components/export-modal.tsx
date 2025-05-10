@@ -147,7 +147,7 @@ export default function ExportModal({ open, onOpenChange }: ExportModalProps) {
       case ElementTypes.GRID:
         html += `<div id="${element.id}">`
         element.children.forEach((child) => {
-          html += renderElement(child.id)
+          html += renderElement(child)
         })
         html += `</div>`
         break
