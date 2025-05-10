@@ -85,7 +85,9 @@ export function getDefaultElement(type: ElementTypes, parentId: string | null = 
         style: {
           display: "grid",
           minHeight: "100px",
-          border: "1px dashed #e5e7eb",
+          borderStyle: "dashed",
+          borderWidth: "1px",
+          borderColor: "#e5e7eb",
         },
         layoutProps: {
           gridTemplateColumns: "repeat(3, 1fr)",

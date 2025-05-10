@@ -194,7 +194,11 @@ export default function ElementRenderer({ elementId, isPreview }: ElementRendere
             onKeyDown={handleKeyDown}
           />
         ) : (
-          <Button className="pointer-events-none">{element.content}</Button>
+          <button
+            className="pointer-events-none"
+          >
+              {element.content}
+          </button>
         )
 
       case ElementTypes.LINK:
