@@ -7,6 +7,7 @@ import { DndProvider } from "react-dnd"
 import { HTML5Backend } from "react-dnd-html5-backend"
 import { Toaster } from "@/components/ui/toaster"
 import { useToast } from "@/hooks/use-toast"
+import { useIsMobile } from "@/hooks/use-mobile"
 import EditorCanvas from "@/components/editor-canvas"
 import ComponentLibrary from "@/components/component-library"
 import PropertyEditor from "@/components/property-editor"
@@ -29,6 +30,7 @@ import {
 
 export default function WebsiteBuilder() {
   const { toast } = useToast()
+  const isMobile = useIsMobile()
   const [isMenu, setIsMenu] = useState(true)
   const [isExiting, setIsExiting] = useState(false)
   const [activeTab, setActiveTab] = useState("components")
@@ -124,6 +126,32 @@ export default function WebsiteBuilder() {
     return null // Prevent hydration errors
   }
 
+  if (isMobile) {
+    return (
+      <div className="flex min-h-screen flex-col items-center justify-center inset-0 z-50 p-4 dark">
+        <div className="fixed inset-0 overflow-hidden bg-gradient-to-br from-black via-red-900 to-black">
+          <div className="absolute inset-0 opacity-20">
+            <div className="bggrid absolute left-0 top-0 grid size-full grid-cols-4 grid-rows-16 gap-4">
+              {Array.from({ length: 64 }).map((_, i) => (
+                <div key={i} className="rounded-md bg-white" />
+              ))}
+            </div>
+          </div>
+          <div className="absolute inset-0 bg-black/40" />
+        </div>
+        <div className="text-center relative bg-background/80 backdrop-blur-md rounded-lg px-8 pt-8 shadow-lg z-10 flex flex-col items-center gap-2">
+          <h2 className="text-2xl font-bold mb-4">Mobile View Unavailable</h2>
+          <p className="text-muted-foreground border-y py-4">
+            This website builder is not optimized for mobile devices.
+            <br />
+            Please use a desktop or tablet.
+          </p>
+          <p className="text-muted-foreground mb-2">Hephaistos - KwikKill</p>
+        </div>
+      </div>
+    )
+  }
+
   if (isMenu) {
     return (
       <div className="flex min-h-screen flex-col items-center justify-center inset-0 z-50 p-4 dark">
@@ -200,7 +228,7 @@ export default function WebsiteBuilder() {
             </Button>
           </div>
           <div>
-            <p className="text-muted-foreground mt-8 mb-2">Hephaistos - KwikKill</p>
+            <p className="text-muted-foreground mt-4 mb-2">Hephaistos - KwikKill</p>
           </div>
         </div>
       </div>
