@@ -170,15 +170,12 @@ export default function ElementRenderer({ elementId, isPreview }: ElementRendere
       case ElementTypes.HEADING:
       case ElementTypes.PARAGRAPH:
         return isEditing ? (
-          <div
-            ref={textRef}
-            contentEditable
-            suppressContentEditableWarning
-            className="w-full h-full outline-none"
+          <input
+            className="w-full h-full outline-none bg-transparent text-center"
+            value={editContent}
+            onChange={(e) => setEditContent(e.target.value)}
             onBlur={handleBlur}
             onKeyDown={handleKeyDown}
-            onInput={(e) => setEditContent(e.currentTarget.textContent || "")}
-            dangerouslySetInnerHTML={{ __html: element.content }}
           />
         ) : (
           <div dangerouslySetInnerHTML={{ __html: element.content }} />
