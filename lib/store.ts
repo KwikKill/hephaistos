@@ -17,6 +17,8 @@ interface WebsiteState {
   setSelectedElementId: (elementId: string | null) => void
   setHoveredElementId: (elementId: string | null) => void
 
+  CreateDefaultWebsite: (name?: string) => void
+
   addPage: (name: string) => void
   updatePage: (pageId: string, updates: Partial<Page>) => void
   deletePage: (pageId: string) => void
@@ -32,6 +34,7 @@ interface WebsiteState {
 
   saveToLocalStorage: () => void
   loadFromLocalStorage: () => void
+  isFromLocalStorage: () => boolean
 }
 
 // Create a default root element for a new page
@@ -67,11 +70,11 @@ const createDefaultPage = (): { page: Page; rootElement: WebsiteElement } => {
 }
 
 // Create the default website structure
-const createDefaultWebsite = (): Website => {
+const createDefaultWebsite = (name?: string): Website => {
   const { page, rootElement } = createDefaultPage()
 
   return {
-    name: "My Website",
+    name: name || "My Website",
     pages: [page],
     elements: {
       [rootElement.id]: rootElement,
@@ -89,6 +92,22 @@ export const useWebsiteStore = create<WebsiteState>((set, get) => ({
   clipboard: null,
 
   setWebsite: (website) => set({ website }),
+
+  CreateDefaultWebsite: (name?: string) => {
+    const { page, rootElement } = createDefaultPage()
+
+    set({
+      website: {
+        name: name || "My Website",
+        pages: [page],
+        elements: {
+          [rootElement.id]: rootElement,
+        },
+      },
+      currentPageId: page.id,
+      selectedElementId: null,
+    })
+  },
 
   setCurrentPageId: (pageId) => set({ currentPageId: pageId, selectedElementId: null }),
 
@@ -522,5 +541,12 @@ export const useWebsiteStore = create<WebsiteState>((set, get) => ({
         }
       }
     }
+  },
+
+  isFromLocalStorage: () => {
+    if (typeof window !== "undefined") {
+      return localStorage.getItem("website-builder") !== null
+    }
+    return false
   },
 }))

@@ -69,3 +69,16 @@
   outline: 2px dashed var(--primary);
   outline-offset: -2px;
 }
+
+.bggrid>div {
+  animation: pulse 10s infinite;
+  animation-delay: calc(var(--index) * 0.1s);
+}
+
+.bggrid>div:nth-child(3n) {
+  animation-delay: calc(var(--index) * 0.2s + 1s);
+}
+
+.bggrid>div:nth-child(5n) {
+  animation-delay: calc(var(--index) * 0.3s + 2s);
+}
