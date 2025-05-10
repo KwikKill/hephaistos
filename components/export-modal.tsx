@@ -55,6 +55,8 @@ export default function ExportModal({ open, onOpenChange }: ExportModalProps) {
       // Show first page by default
       if (pages.length > 0) {
         pages[0].style.display = 'block';
+
+        navLinks[0].classList.add('active');
       }
 
       // Handle navigation
@@ -68,6 +70,13 @@ export default function ExportModal({ open, onOpenChange }: ExportModalProps) {
           });
 
           document.getElementById(targetId).style.display = 'block';
+          window.scrollTo(0, 0);
+
+          // Update nav link styles
+          navLinks.forEach(navLink => {
+            navLink.classList.remove('active');
+          });
+          this.classList.add('active');
         });
       });
     });
@@ -101,14 +110,71 @@ export default function ExportModal({ open, onOpenChange }: ExportModalProps) {
   const generateNavigation = () => {
     if (website.pages.length <= 1) return ""
 
-    let nav =
-      '<nav style="position: sticky; top: 0; left: 0; right: 0; background: #f0f0f0; padding: 10px; z-index: 1000;">'
+    let nav = `
+      <nav style="
+        position: sticky;
+        top: 0;
+        left: 0;
+        right: 0;
+        background: ${website.metadata.NavigationThemeColor || "#ffffff"};
+        padding: 15px 20px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        z-index: 1000;
+        display: flex;
+        gap: 20px;
+        align-items: center;
+        color: ${website.metadata.NavigationTextColor || "#000000"};">
+      ${website.metadata.favicon ? `
+      <div>
+        <img src="${website.metadata.favicon}" alt="Favicon" style="width: 24px; height: 24px; margin-right: 10px;" />
+      </div>
+      ` : ""}
+      <div style="font-size: 1.25rem; font-weight: bold;">${website.name || "My Website"}</div>
+      <div style="display: flex; gap: 15px;">
+    `
 
     website.pages.forEach((page) => {
-      nav += `<a href="#${page.id}" style="margin-right: 10px; text-decoration: none; color: #333;">${page.name}</a>`
+      nav += `
+        <a
+          id="nav-${page.id}"
+          href="#${page.id}"
+          style="
+          text-decoration: none;
+          color: ${website.metadata.NavigationTextColor || "#000000"};
+          font-size: 1rem;
+          transition: color 0.2s ease;"
+        onmouseover="this.style.color='#0056b3'"
+        onmouseout="this.style.color='${website.metadata.NavigationTextColor || "#000000"}'">
+          ${page.name}
+        </a>
+      `
     })
 
-    nav += "</nav>"
+    nav += `
+        </div>
+      </nav>
+      <style>
+        nav a {
+          text-decoration: none;
+          transition: all 0.2s ease;
+          position: relative;
+        }
+
+        nav a.active::after {
+          content: '';
+          position: absolute;
+          bottom: -2px;
+          left: 0;
+          right: 0;
+          height: 2px;
+          background-color: currentColor;
+        }
+
+        nav a.active {
+          font-weight: bold;
+        }
+      </style>
+    `
 
     return nav
   }

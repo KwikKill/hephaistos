@@ -81,6 +81,12 @@ const createDefaultWebsite = (name?: string): Website => {
     elements: {
       [rootElement.id]: rootElement,
     },
+    metadata: {
+      description: "Website created with Hephaistos",
+      favicon: "",
+      NavigationThemeColor: "#ffffff",
+      NavigationTextColor: "#000000",
+    },
   }
 }
 
@@ -104,6 +110,12 @@ export const useWebsiteStore = create<WebsiteState>((set, get) => ({
         pages: [page],
         elements: {
           [rootElement.id]: rootElement,
+        },
+        metadata: {
+          description: "Website created with Hephaistos",
+          favicon: "",
+          NavigationThemeColor: "#ffffff",
+          NavigationTextColor: "#000000",
         },
       },
       currentPageId: page.id,

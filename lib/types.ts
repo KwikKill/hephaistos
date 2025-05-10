@@ -63,4 +63,10 @@ export interface Website {
   name: string
   pages: Page[]
   elements: Record<string, WebsiteElement>
+  metadata: {
+    description: string
+    favicon: string
+    NavigationThemeColor: string
+    NavigationTextColor: string
+  }
 }
