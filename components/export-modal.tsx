@@ -159,11 +159,11 @@ export default function ExportModal({ open, onOpenChange }: ExportModalProps) {
         break
 
       case ElementTypes.BUTTON:
-        html += `<button id="${element.id}">${element.content}</button>`
+        html += `<button id="${element.id}" onclick="${element.onClick || ''}">${element.content}</button>`
         break
 
       case ElementTypes.LINK:
-        html += `<a id="${element.id}" href="#">${element.content}</a>`
+        html += `<a id="${element.id}" href="${element.href || '#'}">${element.content}</a>`
         break
 
       case ElementTypes.IMAGE:

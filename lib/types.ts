@@ -50,6 +50,7 @@ export interface WebsiteElement {
     margin?: string
   }
   href?: string
+  onClick?: string
 }
 
 export interface Page {

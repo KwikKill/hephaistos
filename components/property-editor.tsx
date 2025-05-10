@@ -8,6 +8,7 @@ import { Label } from "@/components/ui/label"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { ColorPicker } from "./color-picker"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { Textarea } from "./ui/textarea"
 
 export default function PropertyEditor() {
   const { website, selectedElementId, updateElement } = useWebsiteStore()
@@ -57,6 +58,18 @@ export default function PropertyEditor() {
     })
   }
 
+  const updateHref = (href: string) => {
+    updateElement(selectedElement.id, {
+      href,
+    })
+  }
+
+  const updateOnClick = (onClick: string) => {
+    updateElement(selectedElement.id, {
+      onClick,
+    })
+  }
+
   return (
     <div className="space-y-6">
       {/* Element name */}
@@ -75,6 +88,8 @@ export default function PropertyEditor() {
       {/* Debugging
       <div className="text-xs text-muted-foreground">
         {JSON.stringify(style)}
+        {JSON.stringify(layoutProps)}
+        {JSON.stringify(selectedElement)}
       </div>*/}
 
       <Tabs value={activeTab} onValueChange={setActiveTab}>
@@ -453,8 +468,26 @@ export default function PropertyEditor() {
                 <Input
                   id="href"
                   value={selectedElement.href || ""}
-                  onChange={(e) => updateLayoutProps({ href: e.target.value })}
+                  onChange={(e) => updateHref(e.target.value)}
                   placeholder="https://example.com"
+                />
+              </div>
+            </div>
+          )}
+
+          {/* Button click Properties */}
+          {selectedElement.type === ElementTypes.BUTTON && (
+            <div className="space-y-2">
+              <h3 className="text-sm font-medium">Button</h3>
+              <div className="space-y-1">
+                <Label htmlFor="onClick" className="text-xs">
+                  On Click
+                </Label>
+                <Textarea
+                  id="onClick"
+                  value={selectedElement.onClick || ""}
+                  onChange={(e) => updateOnClick(e.target.value)}
+                  placeholder="console.log('Button clicked')"
                 />
               </div>
             </div>

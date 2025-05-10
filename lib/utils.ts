@@ -145,6 +145,7 @@ export function getDefaultElement(type: ElementTypes, parentId: string | null = 
           cursor: "pointer",
           display: "inline-block",
         },
+        onClick: "console.log('Button clicked!')",
       }
 
     case ElementTypes.IMAGE:
