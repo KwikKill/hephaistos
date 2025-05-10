@@ -19,6 +19,10 @@ export default function EditorCanvas() {
   // Add global keydown event listener
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
+      // If the target is an input or textarea, do not handle the keydown event
+      if (e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement) {
+        return
+      }
       if (e.key === "Escape") {
         e.preventDefault()
         setSelectedElementId(null)
