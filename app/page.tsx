@@ -227,9 +227,17 @@ export default function WebsiteBuilder() {
               Start Building
             </Button>
           </div>
-          <div>
-            <p className="text-muted-foreground mt-4 mb-2">Hephaistos - KwikKill</p>
-          </div>
+          <a
+            className="text-muted-foreground mt-4 mb-2 flex flex-row items-center justify-center gap-2 hover:text-primary transition-colors duration-200 ease-in-out"
+            href="https://github.com/KwikKill"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <p className="">Hephaistos - KwikKill</p>
+            <div className="flex items-center justify-center">
+              <img src="/icon.svg" alt="Logo" className="h-8 w-8" />
+            </div>
+          </a>
         </div>
       </div>
     )
@@ -242,10 +250,19 @@ export default function WebsiteBuilder() {
         <div className="w-64 border-r bg-muted/40 flex flex-col h-full overflow-scroll">
           <div
             onClick={() => setIsExiting(true)}
-            className="p-4 border-b text-center cursor-pointer hover:bg-muted/50 transition-colors duration-200 ease-in-out"
+            className="p-4 border-b cursor-pointer hover:bg-muted/50 transition-colors duration-200 ease-in-out flex flex-row items-center justify-center gap-2"
           >
-            <h1 className="text-xl font-bold">Hephaistos</h1>
-            <p className="text-xs text-muted-foreground">Website Builder</p>
+            <div className="flex items-center justify-center">
+              <img src="/icon.svg" alt="Logo" className="h-8 w-8" />
+            </div>
+            <div
+              className=""
+            >
+              <h1 className="text-xl font-bold border-b-2 border-muted/50">
+                Hephaistos
+              </h1>
+              <p className="text-xs text-muted-foreground">Website Builder</p>
+            </div>
           </div>
 
           <Tabs value={activeTab} onValueChange={setActiveTab} className="flex-1 flex flex-col">
