@@ -379,20 +379,25 @@ export const useWebsiteStore = create<WebsiteState>((set, get) => ({
       }
     }
 
-    const duplicatedElement = deepCopyElement(elementToDuplicate)
-    duplicatedElement.parentId = elementToDuplicate.parentId
+    //const duplicatedElement = deepCopyElement(elementToDuplicate)
+    //duplicatedElement.parentId = elementToDuplicate.parentId
 
     // Add all new elements to the elements record
     const newElements = { ...website.elements }
 
     const addElementsRecursively = (elementId: string) => {
-      newElements[elementId] = deepCopyElement(website.elements[elementId])
-      website.elements[elementId]?.children.forEach((child) => {
-        addElementsRecursively(child)
+      const newElt = deepCopyElement(website.elements[elementId])
+      newElements[newElt.id] = newElt
+      newElements[newElt.id]?.children.forEach((childId) => {
+        const newChildId = addElementsRecursively(childId)
+        newElt.children[newElt.children.indexOf(childId)] = newChildId
+        newElements[newChildId].parentId = newElt.id
       })
+      return newElt.id
     }
 
-    addElementsRecursively(duplicatedElement.id)
+    const duplicatedElementId = addElementsRecursively(elementToDuplicate.id)
+    const duplicatedElement = newElements[duplicatedElementId]
 
     // Add the duplicated element to its parent
     if (duplicatedElement.parentId && newElements[duplicatedElement.parentId]) {
@@ -416,7 +421,7 @@ export const useWebsiteStore = create<WebsiteState>((set, get) => ({
         ...website,
         elements: newElements,
       },
-      selectedElementId: duplicatedElement.id,
+      selectedElementId: duplicatedElementId,
     })
   },
 
