@@ -141,13 +141,17 @@ export function getDefaultElement(type: ElementTypes, parentId: string | null = 
         style: {
           backgroundColor: "#3b82f6",
           color: "#ffffff",
-          padding: "0.5rem 1rem",
           borderRadius: "0.25rem",
+          borderWidth: "1px",
+          borderColor: "#000000",
           fontWeight: "500",
           cursor: "pointer",
           display: "inline-block",
         },
         onClick: "console.log('Button clicked!')",
+        layoutProps: {
+          padding: "0.5rem 1rem",
+        },
       }
 
     case ElementTypes.IMAGE:
