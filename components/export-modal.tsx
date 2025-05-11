@@ -16,6 +16,7 @@ import {
   DialogTitle,
   DialogClose,
 } from "@/components/ui/dialog"
+import beautify from "js-beautify"
 
 interface ExportModalProps {
   open: boolean
@@ -84,7 +85,7 @@ export default function ExportModal({ open, onOpenChange }: ExportModalProps) {
 </body>
 </html>`
 
-    return html
+    return beautify.html_beautify(html)
   }
 
   // Update the generateCSS function to ensure proper CSS formatting
@@ -110,44 +111,15 @@ export default function ExportModal({ open, onOpenChange }: ExportModalProps) {
   const generateNavigation = () => {
     if (website.pages.length <= 1) return ""
 
-    let nav = `
-      <nav style="
-        position: sticky;
-        top: 0;
-        left: 0;
-        right: 0;
-        background: ${website.metadata.NavigationThemeColor || "#ffffff"};
-        padding: 15px 20px;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        z-index: 1000;
-        display: flex;
-        gap: 20px;
-        align-items: center;
-        color: ${website.metadata.NavigationTextColor || "#000000"};">
-      ${website.metadata.favicon ? `
-      <div>
+    let nav = `<nav style="position: sticky; top: 0; left: 0; right: 0; background: ${website.metadata.NavigationThemeColor || "#ffffff"}; padding: 15px 20px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); z-index: 1000; display: flex; gap: 20px; align-items: center; color: ${website.metadata.NavigationTextColor || "#000000"};">${website.metadata.favicon ? `<div>
         <img src="${website.metadata.favicon}" alt="Favicon" style="width: 24px; height: 24px; margin-right: 10px;" />
-      </div>
-      ` : ""}
+      </div>` : ""}
       <div style="font-size: 1.25rem; font-weight: bold;">${website.name || "My Website"}</div>
       <div style="display: flex; gap: 15px;">
     `
 
     website.pages.forEach((page) => {
-      nav += `
-        <a
-          id="nav-${page.id}"
-          href="#${page.id}"
-          style="
-          text-decoration: none;
-          color: ${website.metadata.NavigationTextColor || "#000000"};
-          font-size: 1rem;
-          transition: color 0.2s ease;"
-        onmouseover="this.style.color='#0056b3'"
-        onmouseout="this.style.color='${website.metadata.NavigationTextColor || "#000000"}'">
-          ${page.name}
-        </a>
-      `
+      nav += `<a id="nav-${page.id}" href="#${page.id}" style=" text-decoration: none; color: ${website.metadata.NavigationTextColor || "#000000"}; font-size: 1rem; transition: color 0.2s ease;" onmouseover="this.style.color='#0056b3'" onmouseout="this.style.color='${website.metadata.NavigationTextColor || "#000000"}'">${page.name}</a>`
     })
 
     nav += `
