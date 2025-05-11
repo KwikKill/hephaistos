@@ -142,7 +142,7 @@ export default function EditorCanvas() {
         <DialogContent className="sm:max-w-[800px] max-h-[90vh] overflow-hidden flex flex-col">
           <DialogHeader>
             <DialogTitle>Edit Website</DialogTitle>
-            <DialogDescription>Modify the website settings and elements.</DialogDescription>
+            <DialogDescription>Modify the website settings and metadatas.</DialogDescription>
           </DialogHeader>
 
           <div

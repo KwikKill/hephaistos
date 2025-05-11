@@ -219,9 +219,11 @@ export default function ElementRenderer({ elementId, isPreview }: ElementRendere
 
       case ElementTypes.IMAGE:
         return (
-          <div className="relative w-full h-full">
-            <Image src={element.content || "/placeholder.svg"} alt="Element image" fill className="object-cover" />
-          </div>
+          <img
+            src={element.content || "/placeholder.svg"}
+            alt="Element image"
+            className="object-cover w-full h-full"
+          />
         )
 
       default:
