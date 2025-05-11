@@ -289,6 +289,33 @@ export default function PropertyEditor() {
               </div>
             </div>
           )}
+
+          {/* Image Object Fit Properties */}
+          {selectedElement.type === ElementTypes.IMAGE && (
+            <div className="space-y-2">
+              <h3 className="text-sm font-medium">Image Properties</h3>
+              <div className="space-y-1 mt-2">
+                <Label htmlFor="objectFit" className="text-xs">
+                  Object Fit
+                </Label>
+                <Select
+                  value={layoutProps.objectFit || "cover"}
+                  onValueChange={(value) => updateLayoutProps({ objectFit: value })}
+                >
+                  <SelectTrigger>
+                    <SelectValue placeholder="Object Fit" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="contain">Contain</SelectItem>
+                    <SelectItem value="cover">Cover</SelectItem>
+                    <SelectItem value="fill">Fill</SelectItem>
+                    <SelectItem value="none">None</SelectItem>
+                    <SelectItem value="scale-down">Scale Down</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+            </div>
+          )}
         </TabsContent>
 
         <TabsContent value="layout" className="space-y-4">

@@ -222,7 +222,8 @@ export default function ElementRenderer({ elementId, isPreview }: ElementRendere
           <img
             src={element.content || "/placeholder.svg"}
             alt="Element image"
-            className="object-cover w-full h-full"
+            className="w-full h-full"
+            style={{ ...combinedStyle }}
           />
         )
 
