@@ -170,7 +170,7 @@ export default function PropertyEditor() {
                 <Input
                   id="borderWidth"
                   value={style.borderWidth || ""}
-                  onChange={(e) => updateStyle({ borderWidth: e.target.value })}
+                  onChange={(e) => updateStyle({ borderWidth: e.target.value || "0px" })}
                   placeholder="0px"
                 />
               </div>

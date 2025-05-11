@@ -99,7 +99,21 @@ export const useWebsiteStore = create<WebsiteState>((set, get) => ({
   hoveredElementId: null,
   clipboard: null,
 
-  setWebsite: (website) => set({ website }),
+  setWebsite: (website) => {
+    // In setWebsite, for each elements, is they have the style "border", decompose it into borderWidth, BorderColor and BorderRadius.
+    for (const element of Object.values(website.elements)) {
+      if (element.style.border) {
+        const border = element.style.border.split(" ")
+        if (border.length === 3) {
+          element.style.borderWidth = border[0]
+          element.style.borderColor = border[2]
+          element.style.borderRadius = border[1]
+        }
+      }
+    }
+    // Set the website state
+    set({ website })
+  },
 
   CreateDefaultWebsite: (name?: string) => {
     const { page, rootElement } = createDefaultPage()
