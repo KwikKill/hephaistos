@@ -46,7 +46,6 @@ const createRootElement = (): WebsiteElement => ({
   name: "Page Root",
   style: {
     minHeight: "100vh",
-    width: "100%",
     backgroundColor: "#ffffff",
   },
   content: "",
