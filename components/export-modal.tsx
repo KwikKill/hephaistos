@@ -29,7 +29,7 @@ export default function ExportModal({ open, onOpenChange }: ExportModalProps) {
 
   const generateHTML = () => {
     const html = `<!DOCTYPE html>
-<html lang="en">
+<html lang="en" style="background: ${website.metadata.NavigationThemeColor || "#ffffff"};">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">

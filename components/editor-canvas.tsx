@@ -3,18 +3,37 @@
 import { useEffect, useState } from "react"
 import { useWebsiteStore } from "@/lib/store"
 import { Button } from "@/components/ui/button"
-import { Eye, EyeOff } from "lucide-react"
+import { Pencil } from "lucide-react"
 import ElementTree from "@/components/element-tree"
 import ElementRenderer from "./element-renderer"
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogClose,
+} from "@/components/ui/dialog"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
+import { ColorPicker } from "@/components/color-picker"
 
 export default function EditorCanvas() {
-  const { website, currentPageId, deleteSelectedElement, setSelectedElementId, deleteElement } = useWebsiteStore()
+  const { website, currentPageId, deleteSelectedElement, setSelectedElementId, deleteElement, setWebsite } = useWebsiteStore()
+
+  const [isEditMode, setIsEditMode] = useState(false)
+  const [websiteCopy, setWebsiteCopy] = useState({ ...website });
+
 
   const currentPage = website.pages.find((page) => page.id === currentPageId)
 
   const handleCanvasClick = () => {
     setSelectedElementId(null)
   }
+
+  useEffect(() => {
+    setWebsiteCopy({ ...website });
+  }, [website]);
 
   // Add global keydown event listener
   useEffect(() => {
@@ -39,6 +58,28 @@ export default function EditorCanvas() {
       window.removeEventListener("keydown", handleKeyDown)
     }
   }, [setSelectedElementId])
+
+  const handleInputChange = (field: string, value: string) => {
+    setWebsiteCopy((prev) => ({
+      ...prev,
+      [field]: value,
+    }));
+  };
+
+  const handleMetadataChange = (field: string, value: string) => {
+    setWebsiteCopy((prev) => ({
+      ...prev,
+      metadata: {
+        ...prev.metadata,
+        [field]: value,
+      },
+    }));
+  };
+
+  const saveChanges = () => {
+    setWebsite(websiteCopy);
+    setIsEditMode(false);
+  };
 
   if (!currentPage) {
     return (
@@ -70,8 +111,17 @@ export default function EditorCanvas() {
   return (
     <div className="h-full flex flex-col">
       <div className="p-2 border-b flex justify-between items-center bg-background">
-        <div>
+        <div className="flex items-center justify-between w-full ml-2">
           <h2 className="font-medium">{website.name} - {currentPage.name}</h2>
+          <Button
+            variant="default"
+            onClick={() => {
+              setIsEditMode(true)
+            }}
+          >
+            <Pencil className="h-4 w-4 mr-2" />
+            Edit Website
+          </Button>
         </div>
       </div>
 
@@ -86,6 +136,81 @@ export default function EditorCanvas() {
           <ElementRenderer elementId={rootElementId} isPreview={false} />
         </div>
       </div>
+
+      {/* Edit Website Modal */}
+      <Dialog open={isEditMode} onOpenChange={(open) => {setIsEditMode(open)}}>
+        <DialogContent className="sm:max-w-[800px] max-h-[90vh] overflow-hidden flex flex-col">
+          <DialogHeader>
+            <DialogTitle>Edit Website</DialogTitle>
+            <DialogDescription>Modify the website settings and elements.</DialogDescription>
+          </DialogHeader>
+
+          <div
+            className="flex flex-col flex-1 overflow-auto py-2 border-y"
+          >
+            <div>
+              <Label htmlFor="website-name">Website Name</Label>
+              <Input
+                id="website-name"
+                value={websiteCopy.name}
+                onChange={(e) => handleInputChange("name", e.target.value)}
+                className="mt-2"
+                placeholder="Enter website name"
+              />
+            </div>
+            <div>
+              <Label htmlFor="website-description">Website Description</Label>
+              <Input
+                id="website-description"
+                value={websiteCopy.metadata.description}
+                onChange={(e) => handleMetadataChange("description", e.target.value)}
+                className="mt-2"
+                placeholder="Enter website description"
+              />
+            </div>
+            <div>
+              <Label htmlFor="website-favicon">Favicon URL</Label>
+              <Input
+                id="website-favicon"
+                value={websiteCopy.metadata.favicon}
+                onChange={(e) => handleMetadataChange("favicon", e.target.value)}
+                className="mt-2"
+                placeholder="Enter favicon URL - Leave empty for no favicon"
+              />
+            </div>
+            <div>
+              <Label>Theme Color</Label>
+              <ColorPicker
+                color={websiteCopy.metadata.NavigationThemeColor}
+                onChange={(color) => {
+                  handleMetadataChange("NavigationThemeColor", color)
+                }}
+              />
+            </div>
+            <div>
+              <Label htmlFor="website-text-color">Text Color</Label>
+              <ColorPicker
+                color={websiteCopy.metadata.NavigationTextColor}
+                onChange={(color) => {
+                  handleMetadataChange("NavigationTextColor", color)
+                }}
+              />
+            </div>
+          </div>
+
+          <div className="flex justify-center items-center pt-4 gap-2">
+            <Button variant="default" onClick={saveChanges}>
+              <Pencil className="h-4 w-4 mr-2" />
+              Edit Website
+            </Button>
+            <DialogClose asChild>
+              <Button variant="outline">
+                Close
+              </Button>
+            </DialogClose>
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   )
 }
