@@ -156,22 +156,22 @@ export default function WebsiteBuilder() {
     return (
       <div className="flex min-h-screen flex-col items-center justify-center inset-0 z-50 p-4 dark">
         <div className="fixed inset-0 overflow-hidden bg-gradient-to-br from-black via-red-900 to-black">
-        <div className="absolute inset-0 opacity-20">
-          <div className="bggrid absolute left-0 top-0 grid size-full grid-cols-12 grid-rows-12 gap-4">
-          {Array.from({ length: 144 }).map((_, i) => {
-            const delay = `${((i % 12) + (Math.floor(i / 12))) * 0.1}s`; // Diagonal wave
-            return (
-              <div
-                key={i}
-                className="rounded-md bg-white shadow-xl"
-                style={{ '--delay': delay } as React.CSSProperties}
-              />
-            );
-          })}
+          <div className="absolute inset-0 opacity-20">
+            <div className="bggrid absolute left-0 top-0 grid size-full grid-cols-12 grid-rows-12 gap-4">
+            {Array.from({ length: 144 }).map((_, i) => {
+              const delay = `${((i % 12) + (Math.floor(i / 12))) * 0.1}s`; // Diagonal wave
+              return (
+                <div
+                  key={i}
+                  className="rounded-md bg-white shadow-xl"
+                  style={{ '--delay': delay } as React.CSSProperties}
+                />
+              );
+            })}
+            </div>
           </div>
+          <div className="absolute inset-0 bg-black/50 pointer-events-none backdrop-blur-sm" />
         </div>
-        <div className="absolute inset-0 bg-black/50 pointer-events-none backdrop-blur-sm" />
-      </div>
         <div className="text-center relative bg-background/80 backdrop-blur-md rounded-lg px-8 pt-8 shadow-lg z-10 flex flex-col items-center gap-2">
           <h1 className="text-2xl font-bold">Welcome to Hephaistos</h1>
           <p className="text-muted-foreground">Click the button below to start building your website.</p>
