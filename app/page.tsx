@@ -170,7 +170,7 @@ export default function WebsiteBuilder() {
             })}
             </div>
           </div>
-          <div className="absolute inset-0 bg-black/50 pointer-events-none backdrop-blur-sm" />
+          <div className="absolute inset-0 bg-black/50 pointer-events-none" />
         </div>
         <div className="text-center relative bg-background/80 backdrop-blur-md rounded-lg px-8 pt-8 shadow-lg z-10 flex flex-col items-center gap-2">
           <h1 className="text-2xl font-bold">Welcome to Hephaistos</h1>
