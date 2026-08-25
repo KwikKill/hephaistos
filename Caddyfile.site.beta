@@ -1,0 +1,3 @@
+hephaistos.somi.{$WEBSITE_HOST} {
+	reverse_proxy hephaistos:3000
+}

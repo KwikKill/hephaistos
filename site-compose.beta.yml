@@ -1,0 +1,13 @@
+services:
+  hephaistos:
+    build:
+      context: ./hephaistos
+      dockerfile: Dockerfile.dev
+    container_name: hephaistos
+    image: site/hephaistos
+    volumes:
+      - ./hephaistos:/src
+    expose:
+      - "3000"
+    networks:
+      - sites
