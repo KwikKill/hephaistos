@@ -1,0 +1,12 @@
+services:
+  hephaistos:
+    build:
+      context: ./hephaistos
+      dockerfile: Dockerfile
+    container_name: hephaistos
+    image: site/hephaistos
+    expose:
+      - "3000"
+    networks:
+      - sites
+    restart: unless-stopped
